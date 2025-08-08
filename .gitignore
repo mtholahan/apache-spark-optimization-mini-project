@@ -1,0 +1,56 @@
+# =========================
+# Python
+# =========================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+
+# Virtual environments
+.venv/
+env/
+venv/
+
+# Environment variables
+.env
+.env.*
+
+# =========================
+# OS-specific files
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# Logs & temporary output
+# =========================
+logs/
+*.log
+
+# Spark event logs
+spark-events/
+*.eventlog
+*.zip
+
+# =========================
+# Project-specific
+# =========================
+# Parquet, CSV, intermediate data files (if not part of source data)
+data/*.parquet
+data/*.csv
+
+# Benchmark logs (keep if needed for analysis)
+benchmark_log.csv
+
+# Plans directory (keep if needed for deliverables)
+# Uncomment if you don't want to commit plan files
+# plans/
+
+# =========================
+# IDE/editor settings
+# =========================
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
