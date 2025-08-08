@@ -1,0 +1,67 @@
+== Physical Plan ==
+AdaptiveSparkPlan (10)
++- HashAggregate (9)
+   +- Exchange (8)
+      +- HashAggregate (7)
+         +- Project (6)
+            +- BroadcastHashJoin LeftOuter BuildRight (5)
+               :- Scan parquet  (1)
+               +- BroadcastExchange (4)
+                  +- Filter (3)
+                     +- Scan parquet  (2)
+
+
+(1) Scan parquet 
+Output [1]: [question_id#15L]
+Batched: true
+Location: InMemoryFileIndex [file:/mnt/c/Projects/Spark Optimization Mini Project/data/questions]
+ReadSchema: struct<question_id:bigint>
+
+(2) Scan parquet 
+Output [2]: [question_id#0L, creation_date#2]
+Batched: true
+Location: InMemoryFileIndex [file:/mnt/c/Projects/Spark Optimization Mini Project/data/answers]
+PushedFilters: [IsNotNull(question_id)]
+ReadSchema: struct<question_id:bigint,creation_date:timestamp>
+
+(3) Filter
+Input [2]: [question_id#0L, creation_date#2]
+Condition : isnotnull(question_id#0L)
+
+(4) BroadcastExchange
+Input [2]: [question_id#0L, creation_date#2]
+Arguments: HashedRelationBroadcastMode(List(input[0, bigint, false]),false), [plan_id=31]
+
+(5) BroadcastHashJoin
+Left keys [1]: [question_id#15L]
+Right keys [1]: [question_id#0L]
+Join type: LeftOuter
+Join condition: None
+
+(6) Project
+Output [2]: [question_id#15L, date_trunc(month, creation_date#2, Some(America/New_York)) AS month#37]
+Input [3]: [question_id#15L, question_id#0L, creation_date#2]
+
+(7) HashAggregate
+Input [2]: [question_id#15L, month#37]
+Keys [2]: [question_id#15L, month#37]
+Functions [1]: [partial_count(1)]
+Aggregate Attributes [1]: [count#51L]
+Results [3]: [question_id#15L, month#37, count#52L]
+
+(8) Exchange
+Input [3]: [question_id#15L, month#37, count#52L]
+Arguments: hashpartitioning(question_id#15L, month#37, 8), ENSURE_REQUIREMENTS, [plan_id=36]
+
+(9) HashAggregate
+Input [3]: [question_id#15L, month#37, count#52L]
+Keys [2]: [question_id#15L, month#37]
+Functions [1]: [count(1)]
+Aggregate Attributes [1]: [count(1)#46L]
+Results [3]: [question_id#15L, month#37, count(1)#46L AS cnt#47L]
+
+(10) AdaptiveSparkPlan
+Output [3]: [question_id#15L, month#37, cnt#47L]
+Arguments: isFinalPlan=false
+
+
