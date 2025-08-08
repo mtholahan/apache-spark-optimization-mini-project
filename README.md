@@ -140,6 +140,5 @@ This project shows that:
 | Baseline physical plan  | Saved `.explain(formatted)` output for baseline query        | [`plans/before_formatted.txt`](plans/before_formatted.txt) |
 | Optimized physical plan | Saved `.explain(formatted)` output for optimized query       | [`plans/after_formatted.txt`](plans/after_formatted.txt)   |
 | Run log                 | Detailed run logs with execution times for each run          | [`logs/run.log`](logs/run.log)                             |
-| Benchmark CSV           | CSV file with execution time, shuffle metrics, and row counts | [`benchmark_log.csv`](benchmark_log.csv)                   |
 | Optimized script        | Final optimized PySpark script with logging and plan capture | [`optimize.py`](optimize.py)                               |
 | README                  | This document                                                | [`README.md`](README.md)                                   |
