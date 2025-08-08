@@ -135,12 +135,11 @@ This project shows that:
 
 ## Deliverables
 
-| Deliverable             | Description                                                  | File(s)                                                      |
-| ----------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| Baseline physical plan  | Saved `.explain(formatted)` output for baseline query        | [`plans/before_formatted.txt`](plans/before_formatted.txt)   |
-| Optimized physical plan | Saved `.explain(formatted)` output for optimized query       | [`plans/after_formatted.txt`](plans/after_formatted.txt)     |
-| Run log                 | Detailed run logs with execution times for each run          | [`logs/run.log`](logs/run.log)                               |
-| Benchmark CSV           | CSV file with execution time, shuffle metrics, and row counts | [`benchmark_log.csv`](benchmark_log.csv)                     |
-| Event logs              | Full Spark event logs for all runs (for Spark History Server inspection) | [`eventLogs-local-1754684722369.zip`](eventLogs-local-1754684722369.zip), [`eventLogs-local-1754684807733.zip`](eventLogs-local-1754684807733.zip), [`eventLogs-local-1754684834401.zip`](eventLogs-local-1754684834401.zip) |
-| Optimized script        | Final optimized PySpark script with logging and plan capture | [`optimize.py`](optimize.py)                                 |
-| README                  | This document                                                | [`README.md`](README.md)                                     |
+| Deliverable             | Description                                                  | File(s)                                                    |
+| ----------------------- | ------------------------------------------------------------ | ---------------------------------------------------------- |
+| Baseline physical plan  | Saved `.explain(formatted)` output for baseline query        | [`plans/before_formatted.txt`](plans/before_formatted.txt) |
+| Optimized physical plan | Saved `.explain(formatted)` output for optimized query       | [`plans/after_formatted.txt`](plans/after_formatted.txt)   |
+| Run log                 | Detailed run logs with execution times for each run          | [`logs/run.log`](logs/run.log)                             |
+| Benchmark CSV           | CSV file with execution time, shuffle metrics, and row counts | [`benchmark_log.csv`](benchmark_log.csv)                   |
+| Optimized script        | Final optimized PySpark script with logging and plan capture | [`optimize.py`](optimize.py)                               |
+| README                  | This document                                                | [`README.md`](README.md)                                   |

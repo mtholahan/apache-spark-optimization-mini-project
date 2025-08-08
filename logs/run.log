@@ -1,0 +1,22 @@
+2025-08-08 16:25:26,185 INFO conf spark.sql.shuffle.partitions = 8
+2025-08-08 16:25:26,186 INFO conf spark.sql.autoBroadcastJoinThreshold = 10485760
+2025-08-08 16:25:26,186 INFO conf spark.executor.memory = <unset>
+2025-08-08 16:25:26,187 INFO conf spark.driver.memory = <unset>
+2025-08-08 16:25:26,188 INFO conf spark.sql.adaptive.enabled = true
+2025-08-08 16:25:36,801 INFO baseline_elapsed_s=4.311
+2025-08-08 16:26:35,404 INFO Closing down clientserver connection
+2025-08-08 16:26:49,392 INFO conf spark.sql.shuffle.partitions = 8
+2025-08-08 16:26:49,394 INFO conf spark.sql.autoBroadcastJoinThreshold = 10485760
+2025-08-08 16:26:49,395 INFO conf spark.executor.memory = <unset>
+2025-08-08 16:26:49,396 INFO conf spark.driver.memory = <unset>
+2025-08-08 16:26:49,397 INFO conf spark.sql.adaptive.enabled = true
+2025-08-08 16:26:56,580 INFO optimized_elapsed_s=3.398
+2025-08-08 16:27:01,252 INFO Closing down clientserver connection
+2025-08-08 16:27:16,033 INFO conf spark.sql.shuffle.partitions = 8
+2025-08-08 16:27:16,034 INFO conf spark.sql.autoBroadcastJoinThreshold = 10485760
+2025-08-08 16:27:16,036 INFO conf spark.executor.memory = <unset>
+2025-08-08 16:27:16,037 INFO conf spark.driver.memory = <unset>
+2025-08-08 16:27:16,038 INFO conf spark.sql.adaptive.enabled = true
+2025-08-08 16:27:23,443 INFO baseline_elapsed_s=3.908
+2025-08-08 16:27:25,220 INFO optimized_elapsed_s=1.439
+2025-08-08 16:27:27,837 INFO Closing down clientserver connection
