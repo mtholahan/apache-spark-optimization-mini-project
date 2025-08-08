@@ -1,5 +1,10 @@
 # Spark Optimization Mini-Project
 
+## About
+This project demonstrates practical performance optimization in Apache Spark by comparing a baseline query with an optimized alternative.
+It includes instrumentation to measure execution time, shuffle read/write volumes, and stage durations using the Spark History Server API.
+Both physical plans are saved for before/after comparison, enabling clear insight into the impact of specific tuning strategies such as aggregation pushdown, join optimization, and column pruning.
+
 ## Overview
 
 This mini-project demonstrates query optimization in Apache Spark by comparing a **baseline** query against an **optimized** query using the same dataset.
