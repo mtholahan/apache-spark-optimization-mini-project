@@ -1,0 +1,28 @@
+15:08 8/8/2025
+
+$SPARK_HOME/sbin/stop-history-server.sh
+
+rm -rf /tmp/spark-events/*
+mkdir -p /tmp/spark-events
+
+$SPARK_HOME/sbin/start-history-server.sh
+
+KEEP_SPARK_UI_OPEN=1 spark-submit \
+  --conf spark.eventLog.enabled=true \
+  --conf spark.eventLog.dir=file:///tmp/spark-events \
+  optimize.py --mode baseline
+
+Ctrl+C
+
+spark-submit \
+  --conf spark.eventLog.enabled=true \
+  --conf spark.eventLog.dir=file:///tmp/spark-events \
+  optimize.py --mode optimized
+
+KEEP_SPARK_UI_OPEN=1 spark-submit \
+  --conf spark.eventLog.enabled=true \
+  --conf spark.eventLog.dir=file:///tmp/spark-events \
+  optimize.py --mode compare
+
+
+Ctrl+C
