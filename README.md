@@ -1,149 +1,120 @@
-# Spark Optimization Mini-Project
-
-## About
-This project demonstrates practical performance optimization in Apache Spark by comparing a baseline query with an optimized alternative.
-It includes instrumentation to measure execution time, shuffle read/write volumes, and stage durations using the Spark History Server API.
-Both physical plans are saved for before/after comparison, enabling clear insight into the impact of specific tuning strategies such as aggregation pushdown, join optimization, and column pruning.
-
-## Overview
-
-This mini-project demonstrates query optimization in Apache Spark by comparing a **baseline** query against an **optimized** query using the same dataset.
- We capture:
-
-- Query execution time
-- Spark physical execution plans
-- Shuffle read/write metrics from the Spark History Server
-
-The optimized query reduces execution time and resource usage through:
-
-1. Pre-aggregation before joins
-2. Broadcast joins where appropriate
-3. Column pruning in the optimized run only
-
-------
-
-## Prerequisites
-- Apache Spark 3.x
-- Python 3.x
-- `pyspark` installed
-- Spark History Server running (`$SPARK_HOME/sbin/start-history-server.sh`)
-
-------
-
-## Dataset
-
-- **questions** and **answers** datasets in Parquet format, located in `./data/questions` and `./data/answers`.
-
-------
-
-## Usage
-
-### 1. Start Spark History Server
-
-```bash
-$SPARK_HOME/sbin/start-history-server.sh
-# Access UI: http://localhost:18080
-```
-
-### 2. Run in Baseline Mode
-
-```bash
-spark-submit \
-  --conf spark.eventLog.enabled=true \
-  --conf spark.eventLog.dir=file:///tmp/spark-events \
-  optimize.py --mode baseline
-```
-
-### 3. Run in Optimized Mode
-
-```bash
-spark-submit \
-  --conf spark.eventLog.enabled=true \
-  --conf spark.eventLog.dir=file:///tmp/spark-events \
-  optimize.py --mode optimized
-```
-
-### 4. Run Compare Mode (Baseline then Optimized)
-
-```bash
-spark-submit \
-  --conf spark.eventLog.enabled=true \
-  --conf spark.eventLog.dir=file:///tmp/spark-events \
-  optimize.py --mode compare
-```
-
-## Notes
-
-- The `--conf spark.eventLog.enabled=true` and `--conf spark.eventLog.dir=...` flags are **required** so that Spark writes event logs. These logs are consumed by the Spark History Server to produce the shuffle and execution metrics shown in the **Deliverables** and **Results** sections.
-- The **compare** mode runs both baseline and optimized queries sequentially in one session, capturing metrics for each.
-- The Spark UI is available during runtime at: http://localhost:4040
-- The Spark History Server can be used to review completed runs.
+# Apache Spark Optimization Mini Project
 
 
-------
+## 📖 Abstract
+This project reimplements an automobile post-sales reporting system using Apache Spark, showcasing Spark’s efficiency compared to legacy Hadoop MapReduce approaches. The dataset contains historical vehicle incidents, including initial sales, private resales, repairs, and accidents. The business goal is to generate a consolidated report of total accident counts per vehicle make and year, a valuable metric for second-hand buyers assessing vehicle reliability.
 
-## Retrieving Shuffle Metrics
+The workflow leverages Spark RDD transformations and actions to propagate vehicle metadata (make, year) from initial sale records into associated accident records, keyed by VIN. With Spark’s groupByKey, each VIN’s records are grouped, enriched, and transformed into accident-only outputs carrying complete context. The pipeline then maps make–year pairs, applies reduceByKey aggregations, and produces a count of accidents for each brand/year combination.
 
-After a run, you can retrieve shuffle stats directly from the History Server API:
+Outputs are persisted in HDFS as CSV, and the job is packaged with a submission shell script for execution via spark-submit. This redesign illustrates how Spark’s in-memory computation and concise functional APIs (map, flatMap, reduceByKey) streamline workflows that otherwise require verbose, multi-stage MapReduce jobs.
 
-```bash
-bashCopyEditcurl -s "http://localhost:18080/api/v1/applications/<appId>/stages" \
-| jq '[ .[] | {stageId, shuffleReadMB:(.shuffleReadBytes//0/1048576), shuffleWriteMB:(.shuffleWriteBytes//0/1048576)} ]'
-```
-
-Replace `<appId>` with the Application ID from the History Server UI.
-
----
-
-## Optimization Approach
-We incrementally improved the query by:
-1. **Aggregating before join** – Reduce shuffle size by grouping `answers` first.
-2. **Column pruning** – In the optimized query, only keep necessary columns.
-3. **Broadcast join** – Broadcast the smaller `questions` DataFrame.
-4. **Shuffle partition tuning** – Reduce `spark.sql.shuffle.partitions` from default (200) to `8` for local development.
-
-
----
-
-## Results
-
-> [!NOTE]
->
-> Shuffle metrics were pulled from the History Server via `jq` and may slightly differ across runs due to Spark execution variance.
-
-| Run Mode     | Execution Time (s) | Shuffle Read (MB) | Shuffle Write (MB) |
-| ------------ | -----------------: | ----------------: | -----------------: |
-| Baseline #1  |              4.311 |             0.674 |           0.000056 |
-| Optimized #1 |              3.398 |             0.744 |           0.000225 |
-| Baseline #2  |              3.908 |             0.674 |           0.000056 |
-| Optimized #2 |              1.439 |             0.744 |           0.000225 |
+Through this project, I gained hands-on skills in RDD-based ETL, grouping and aggregation, HDFS integration, and Spark job deployment, while appreciating Spark’s superiority in developer productivity and performance.
 
 
 
-------
+## 🛠 Requirements
+- Apache Spark 3.x (local mode or cluster)
+- PySpark installed
+- Provided dataset + optimize.py script from project archive
+- GitHub repo with:
+  - Original unoptimized code
+  - Optimized code
+  - README explaining improvements
+  - Execution logs + query plans
 
-## Observations
 
-- **Execution Time**: Optimized query is ~3x faster than baseline.
-- **Shuffle Read**: Slightly higher in optimized mode due to broadcast join strategy and pre-aggregation changes.
-- **Shuffle Write**: Increased because intermediate results in the optimized plan are materialized differently.
 
-## Conclusion
+## 🧰 Setup
+- Download and extract project archive
+- Verify optimize.py is present
+- Place dataset in project folder
+- Ensure Spark is running locally
+- Run initial job with: spark-submit optimize.py
 
-This project shows that:
 
-- Aggregating before joining can significantly reduce execution time.
-- Broadcast joins can be beneficial when one table is small enough to fit in memory.
-- Column pruning reduces data shuffling and improves efficiency.
 
----
+## 📊 Dataset
+- Input dataset packaged in project archive
+- Used for Q&A query aggregation task
+- Schema: questions, answers, timestamps (monthly grouping)
 
-## Deliverables
 
-| Deliverable             | Description                                                  | File(s)                                                    |
-| ----------------------- | ------------------------------------------------------------ | ---------------------------------------------------------- |
-| Baseline physical plan  | Saved `.explain(formatted)` output for baseline query        | [`plans/before_formatted.txt`](plans/before_formatted.txt) |
-| Optimized physical plan | Saved `.explain(formatted)` output for optimized query       | [`plans/after_formatted.txt`](plans/after_formatted.txt)   |
-| Run log                 | Detailed run logs with execution times for each run          | [`logs/run.log`](logs/run.log)                             |
-| Optimized script        | Final optimized PySpark script with logging and plan capture | [`optimize.py`](optimize.py)                               |
-| README                  | This document                                                | [`README.md`](README.md)                                   |
+
+## ⏱️ Run Steps
+- Run baseline code: spark-submit optimize.py (unoptimized version)
+- Capture EXPLAIN plan (saved in evidence/before_formatted.txt)
+- Rewrite query with:
+  - Appropriate Spark operators
+  - Fewer shuffles
+  - Better partitioning and caching
+- Rerun optimized code
+- Capture new EXPLAIN plan (evidence/after_formatted.txt)
+- Save runtime log to logs/run.log
+
+
+
+## 📈 Outputs
+- Execution logs (logs/run.log)
+- Query plans:
+  - evidence/before_formatted.txt (unoptimized)
+  - evidence/after_formatted.txt (optimized)
+- Optimized PySpark script showing performance improvements
+
+
+
+## 📸 Evidence
+
+![run_log.png](./evidence/run_log.png)  
+Screenshot excerpt from logs/run.log showing optimized run completion
+
+![before_plan.png](./evidence/before_plan.png)  
+Screenshot of unoptimized EXPLAIN plan (before_formatted.txt)
+
+![after_plan.png](./evidence/after_plan.png)  
+Screenshot of optimized EXPLAIN plan (after_formatted.txt)
+
+
+
+
+## 📎 Deliverables
+
+- [`- optimize.py (with improvements)`](./deliverables/- optimize.py (with improvements))
+
+- [`- README.md describing issues and optimizations applied`](./deliverables/- README.md describing issues and optimizations applied)
+
+- [`- Raw execution log: deliverables/log_run.txt`](./deliverables/- Raw execution log: deliverables/log_run.txt)
+
+- [`- Query plans: deliverables/plan_before.txt and deliverables/plan_after.txt`](./deliverables/- Query plans: deliverables/plan_before.txt and deliverables/plan_after.txt)
+
+- [`- Evidence screenshots in /evidence/`](./deliverables/- Evidence screenshots in /evidence/)
+
+
+
+
+## 🛠️ Architecture
+- Single-node Spark environment
+- Job pipeline:
+  - Load Q&A dataset
+  - Aggregate answers by question and month
+  - Compare unoptimized vs optimized transformations
+- Improvements applied:
+  - Operator selection
+  - Reduced shuffles
+  - Partitioning tuning
+
+
+
+## 🔍 Monitoring
+- Compared runtime metrics in logs/run.log
+- Inspected EXPLAIN query plans before and after optimization
+- Verified reduced shuffle stages and improved execution DAG
+
+
+
+## ♻️ Cleanup
+- Remove intermediate logs/ and evidence/ directories if not needed
+- Stop local Spark session
+
+
+
+*Generated automatically via Python + Jinja2 + SQL Server table `tblMiniProjectProgress` on 09-14-2025 23:37:22*
