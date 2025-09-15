@@ -2,113 +2,105 @@
 
 
 ## 📖 Abstract
-This project focuses on performance tuning within the Apache Spark framework using Databricks. A customer churn dataset is processed in a Spark job to perform analytics. The project explores how different optimization techniques such as caching strategies, partitioning, and joins affect the job's execution plan and performance. Students are asked to identify bottlenecks using the Spark UI and propose improvements to reduce job completion time. The goal is to understand the mechanics of distributed computing and gain hands-on experience in debugging and optimizing Spark applications.
+The mini project centers around optimizing an existing PySpark script (optimize.py). The script performs a query that retrieves the number of answers per question per month. The original implementation is suboptimal and must be improved using Spark performance techniques. The goal is to learn how to interpret Spark physical plans and apply tuning strategies that reduce job latency and improve scalability.
 
 
 
 ## 🛠 Requirements
-- Databricks Community Edition or equivalent Spark platform
-- Apache Spark 3.x
-- Customer churn dataset (CSV format)
-- Familiarity with Spark DataFrames, Spark SQL
-- Usage of Spark UI for job analysis
-- Knowledge of performance tuning techniques (partitioning, caching, broadcast joins)
+- Apache Spark (local installation)
+- PySpark (Python Spark bindings)
+- optimize.py starter script
+- Local folder structure for inputs and outputs
+- Understanding of joins, aggregations, and query optimization in Spark
 
 
 
 ## 🧰 Setup
-- Upload the provided churn dataset to Databricks
-- Create a new notebook and import the starter code
-- Run the initial job and observe Spark UI metrics
-- Make iterative changes to optimize execution (e.g., change join type, cache intermediate data)
-- Re-run and compare job performance in Spark UI
+- Download the .zip archive from the project link
+- Extract contents locally
+- Launch PySpark session
+- Open optimize.py and run the baseline query
+- Modify query logic to apply optimizations
 
 
 
 ## 📊 Dataset
-- Customer churn dataset (CSV format)
-
-- Fields include: customer ID, gender, tenure, services used, contract type, payment method, churn label
-
- Used as input to Spark DataFrame transformations and aggregations
+- Dataset is bundled with the archive
+- Contains questions and answers table (exact schema not specified)
+- Used to compute monthly answer counts per question
 
 
 
 ## ⏱️ Run Steps
-- Load data into Spark DataFrame
-- Conduct exploratory transformations and aggregations
-- Use Spark UI to observe job stages and execution plans
-- Apply optimizations (cache, repartition, broadcast joins)
-- Track changes in execution metrics and document performance improvements
+- Run original optimize.py script to observe baseline performance
+- Review Spark physical plan (e.g., via explain() or Spark UI)
+- Apply optimizations:
+- Reduce shuffle
+- Re-partition strategically
+- Use efficient operators
+- Re-run optimized version and compare results
 
 
 
 ## 📈 Outputs
-- Optimized Spark job with reduced runtime
-- Documented comparison of execution plans and job metrics (before/after optimization)
-- Discussion of trade-offs and rationale for tuning strategies
-- Screenshots or logs from Spark UI showing reduced stages/tasks or memory usage
+- Improved version of optimize.py
+- Performance metrics before and after optimization
+- Optional screenshots of Spark UI DAG or physical plan
+- Written summary of what changed and why
 
 
 
 ## 📸 Evidence
 
-![execution_plan_before.png](./evidence/execution_plan_before.png)  
-Screenshot of Spark UI execution plan before optimizations
+![original_dag.png](./evidence/original_dag.png)  
+Screenshot of Spark physical plan before optimization
 
-![execution_plan_after.png](./evidence/execution_plan_after.png)  
-Screenshot of Spark UI execution plan after optimizations
+![optimized_dag.png](./evidence/optimized_dag.png)  
+Screenshot of Spark physical plan after optimization
 
-![spark_ui_metrics_table.png](./evidence/spark_ui_metrics_table.png)  
-Screenshot of Spark UI metrics comparing job duration and shuffle activity
+![performance_diff_table.png](./evidence/performance_diff_table.png)  
+Screenshot or table showing execution time and shuffle reduction
 
-![tuning_code_snippet.png](./evidence/tuning_code_snippet.png)  
-Screenshot of notebook section showing use of caching and broadcast joins
+![code_diff_snippet.png](./evidence/code_diff_snippet.png)  
+Screenshot of code comparing original and optimized logic
 
 
 
 
 ## 📎 Deliverables
 
-- [`- - Optimized Spark notebook implementing performance improvements`](./deliverables/- - Optimized Spark notebook implementing performance improvements)
+- [`- Original and optimized versions of optimize.py`](./deliverables/- Original and optimized versions of optimize.py)
 
-- [`- Python or Databricks notebook file stored in /deliverables/`](./deliverables/- Python or Databricks notebook file stored in /deliverables/)
+- [`- Performance summary notes stored in /deliverables/`](./deliverables/- Performance summary notes stored in /deliverables/)
 
-- [`- Summary notes comparing performance before and after optimization`](./deliverables/- Summary notes comparing performance before and after optimization)
+- [`- Spark UI DAG screenshots showing before/after improvements`](./deliverables/- Spark UI DAG screenshots showing before/after improvements)
 
-- [`- Spark UI execution plan screenshots saved in /evidence/`](./deliverables/- Spark UI execution plan screenshots saved in /evidence/)
-
-- [`- README with overview of tuning techniques and setup instructions`](./deliverables/- README with overview of tuning techniques and setup instructions)
+- [`- README explaining bottlenecks and applied optimizations`](./deliverables/- README explaining bottlenecks and applied optimizations)
 
 
 
 
 ## 🛠️ Architecture
-- Single-node or cluster Databricks environment
-- Input CSV → Spark DataFrame
-- Transformations/joins → Optimization via cache/broadcast
-- Spark UI used for monitoring
-- Output not persisted — focus is on tuning not data storage
+- Local Spark environment using PySpark CLI
+- Input data loaded from local files
+- Single-node execution context
+- No database or external services involved
+- Job structure: Input CSV -> Transformations -> Aggregation -> Output (if any)
 
 
 
 ## 🔍 Monitoring
-- Spark UI used to monitor:
--   Job duration
--   Shuffle read/write
--   Memory usage
--   Number of stages/tasks
-- Visual DAG inspection to validate optimization impact
+- Manual tracking of execution time before and after optimization
+- explain() output or Spark UI DAG for logical plan comparison
+- Memory use and shuffle metrics reviewed via logs or UI
 
 
 
 ## ♻️ Cleanup
-- No explicit resource cleanup needed in Databricks
-
-- Clear cached DataFrames (unpersist()) if needed
-
-- Remove test datasets or notebooks after submission if storing externally
+- Delete temporary files from local directory
+- Archive both versions of the script
+- Optional: Document optimization strategies in project repo
 
 
 
-*Generated automatically via Python + Jinja2 + SQL Server table `tblMiniProjectProgress` on 09-15-2025 18:03:56*
+*Generated automatically via Python + Jinja2 + SQL Server table `tblMiniProjectProgress` on 09-15-2025 19:26:53*
