@@ -2,119 +2,113 @@
 
 
 ## 📖 Abstract
-This project reimplements an automobile post-sales reporting system using Apache Spark, showcasing Spark’s efficiency compared to legacy Hadoop MapReduce approaches. The dataset contains historical vehicle incidents, including initial sales, private resales, repairs, and accidents. The business goal is to generate a consolidated report of total accident counts per vehicle make and year, a valuable metric for second-hand buyers assessing vehicle reliability.
-
-The workflow leverages Spark RDD transformations and actions to propagate vehicle metadata (make, year) from initial sale records into associated accident records, keyed by VIN. With Spark’s groupByKey, each VIN’s records are grouped, enriched, and transformed into accident-only outputs carrying complete context. The pipeline then maps make–year pairs, applies reduceByKey aggregations, and produces a count of accidents for each brand/year combination.
-
-Outputs are persisted in HDFS as CSV, and the job is packaged with a submission shell script for execution via spark-submit. This redesign illustrates how Spark’s in-memory computation and concise functional APIs (map, flatMap, reduceByKey) streamline workflows that otherwise require verbose, multi-stage MapReduce jobs.
-
-Through this project, I gained hands-on skills in RDD-based ETL, grouping and aggregation, HDFS integration, and Spark job deployment, while appreciating Spark’s superiority in developer productivity and performance.
+This project focuses on performance tuning within the Apache Spark framework using Databricks. A customer churn dataset is processed in a Spark job to perform analytics. The project explores how different optimization techniques such as caching strategies, partitioning, and joins affect the job's execution plan and performance. Students are asked to identify bottlenecks using the Spark UI and propose improvements to reduce job completion time. The goal is to understand the mechanics of distributed computing and gain hands-on experience in debugging and optimizing Spark applications.
 
 
 
 ## 🛠 Requirements
-- Apache Spark 3.x (local mode or cluster)
-- PySpark installed
-- Provided dataset + optimize.py script from project archive
-- GitHub repo with:
-  - Original unoptimized code
-  - Optimized code
-  - README explaining improvements
-  - Execution logs + query plans
+- Databricks Community Edition or equivalent Spark platform
+- Apache Spark 3.x
+- Customer churn dataset (CSV format)
+- Familiarity with Spark DataFrames, Spark SQL
+- Usage of Spark UI for job analysis
+- Knowledge of performance tuning techniques (partitioning, caching, broadcast joins)
 
 
 
 ## 🧰 Setup
-- Download and extract project archive
-- Verify optimize.py is present
-- Place dataset in project folder
-- Ensure Spark is running locally
-- Run initial job with: spark-submit optimize.py
+- Upload the provided churn dataset to Databricks
+- Create a new notebook and import the starter code
+- Run the initial job and observe Spark UI metrics
+- Make iterative changes to optimize execution (e.g., change join type, cache intermediate data)
+- Re-run and compare job performance in Spark UI
 
 
 
 ## 📊 Dataset
-- Input dataset packaged in project archive
-- Used for Q&A query aggregation task
-- Schema: questions, answers, timestamps (monthly grouping)
+- Customer churn dataset (CSV format)
+
+- Fields include: customer ID, gender, tenure, services used, contract type, payment method, churn label
+
+ Used as input to Spark DataFrame transformations and aggregations
 
 
 
 ## ⏱️ Run Steps
-- Run baseline code: spark-submit optimize.py (unoptimized version)
-- Capture EXPLAIN plan (saved in evidence/before_formatted.txt)
-- Rewrite query with:
-  - Appropriate Spark operators
-  - Fewer shuffles
-  - Better partitioning and caching
-- Rerun optimized code
-- Capture new EXPLAIN plan (evidence/after_formatted.txt)
-- Save runtime log to logs/run.log
+- Load data into Spark DataFrame
+- Conduct exploratory transformations and aggregations
+- Use Spark UI to observe job stages and execution plans
+- Apply optimizations (cache, repartition, broadcast joins)
+- Track changes in execution metrics and document performance improvements
 
 
 
 ## 📈 Outputs
-- Execution logs (logs/run.log)
-- Query plans:
-  - evidence/before_formatted.txt (unoptimized)
-  - evidence/after_formatted.txt (optimized)
-- Optimized PySpark script showing performance improvements
+- Optimized Spark job with reduced runtime
+- Documented comparison of execution plans and job metrics (before/after optimization)
+- Discussion of trade-offs and rationale for tuning strategies
+- Screenshots or logs from Spark UI showing reduced stages/tasks or memory usage
 
 
 
 ## 📸 Evidence
 
-![run_log.png](./evidence/run_log.png)  
-Screenshot excerpt from logs/run.log showing optimized run completion
+![execution_plan_before.png](./evidence/execution_plan_before.png)  
+Screenshot of Spark UI execution plan before optimizations
 
-![before_plan.png](./evidence/before_plan.png)  
-Screenshot of unoptimized EXPLAIN plan (before_formatted.txt)
+![execution_plan_after.png](./evidence/execution_plan_after.png)  
+Screenshot of Spark UI execution plan after optimizations
 
-![after_plan.png](./evidence/after_plan.png)  
-Screenshot of optimized EXPLAIN plan (after_formatted.txt)
+![spark_ui_metrics_table.png](./evidence/spark_ui_metrics_table.png)  
+Screenshot of Spark UI metrics comparing job duration and shuffle activity
+
+![tuning_code_snippet.png](./evidence/tuning_code_snippet.png)  
+Screenshot of notebook section showing use of caching and broadcast joins
 
 
 
 
 ## 📎 Deliverables
 
-- [`- optimize.py (with improvements)`](./deliverables/- optimize.py (with improvements))
+- [`- - Optimized Spark notebook implementing performance improvements`](./deliverables/- - Optimized Spark notebook implementing performance improvements)
 
-- [`- README.md describing issues and optimizations applied`](./deliverables/- README.md describing issues and optimizations applied)
+- [`- Python or Databricks notebook file stored in /deliverables/`](./deliverables/- Python or Databricks notebook file stored in /deliverables/)
 
-- [`- Raw execution log: deliverables/log_run.txt`](./deliverables/- Raw execution log: deliverables/log_run.txt)
+- [`- Summary notes comparing performance before and after optimization`](./deliverables/- Summary notes comparing performance before and after optimization)
 
-- [`- Query plans: deliverables/plan_before.txt and deliverables/plan_after.txt`](./deliverables/- Query plans: deliverables/plan_before.txt and deliverables/plan_after.txt)
+- [`- Spark UI execution plan screenshots saved in /evidence/`](./deliverables/- Spark UI execution plan screenshots saved in /evidence/)
 
-- [`- Evidence screenshots in /evidence/`](./deliverables/- Evidence screenshots in /evidence/)
+- [`- README with overview of tuning techniques and setup instructions`](./deliverables/- README with overview of tuning techniques and setup instructions)
 
 
 
 
 ## 🛠️ Architecture
-- Single-node Spark environment
-- Job pipeline:
-  - Load Q&A dataset
-  - Aggregate answers by question and month
-  - Compare unoptimized vs optimized transformations
-- Improvements applied:
-  - Operator selection
-  - Reduced shuffles
-  - Partitioning tuning
+- Single-node or cluster Databricks environment
+- Input CSV → Spark DataFrame
+- Transformations/joins → Optimization via cache/broadcast
+- Spark UI used for monitoring
+- Output not persisted — focus is on tuning not data storage
 
 
 
 ## 🔍 Monitoring
-- Compared runtime metrics in logs/run.log
-- Inspected EXPLAIN query plans before and after optimization
-- Verified reduced shuffle stages and improved execution DAG
+- Spark UI used to monitor:
+-   Job duration
+-   Shuffle read/write
+-   Memory usage
+-   Number of stages/tasks
+- Visual DAG inspection to validate optimization impact
 
 
 
 ## ♻️ Cleanup
-- Remove intermediate logs/ and evidence/ directories if not needed
-- Stop local Spark session
+- No explicit resource cleanup needed in Databricks
+
+- Clear cached DataFrames (unpersist()) if needed
+
+- Remove test datasets or notebooks after submission if storing externally
 
 
 
-*Generated automatically via Python + Jinja2 + SQL Server table `tblMiniProjectProgress` on 09-15-2025 00:57:54*
+*Generated automatically via Python + Jinja2 + SQL Server table `tblMiniProjectProgress` on 09-15-2025 18:03:56*
