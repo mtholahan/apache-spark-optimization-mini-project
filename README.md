@@ -62,7 +62,7 @@ I ran this project in a WSL2/Ubuntu shell on a Windows host, using a local PySpa
 - Improved version of original_optimize.py
 - Performance metrics before and after optimization (row count, unique IDs, execution time)
 - Optional screenshots of Spark UI DAG or physical plan (not required)
-- Written summary of changes and why they were effective
+- Written summary of changes and why they were effective (see "Abstract")
 
 
 
@@ -109,4 +109,4 @@ Screenshot of PySpark output of revised Python script
 - Final README generated via SQL Server + Jinja2-based automation
 
 
-*Generated automatically via Python + Jinja2 + SQL Server table `tblMiniProjectProgress` on 09-16-2025 17:46:48*
+*Generated automatically via Python + Jinja2 + SQL Server table `tblMiniProjectProgress` on 09-16-2025 17:48:16*
