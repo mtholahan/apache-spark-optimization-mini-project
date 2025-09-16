@@ -12,7 +12,7 @@ The original query joined the full questions and answers datasets, then grouped 
 - Improved date grouping — used date_trunc() instead of month() to support accurate year-month time-based aggregation.
 - Attempted broadcast optimization — included a broadcast() hint to minimize join overhead, though Spark's join type limited its effect in this context.
 
-These changes reduced the runtime from 16.52s to 6.18s and increased result accuracy by preventing cross-year month collisions.
+These changes reduced the runtime from 9.62s to 6.01s and increased result accuracy by preventing cross-year month collisions.
 
 
 
@@ -109,4 +109,4 @@ Screenshot of PySpark output of revised Python script
 - Final README generated via SQL Server + Jinja2-based automation
 
 
-*Generated automatically via Python + Jinja2 + SQL Server table `tblMiniProjectProgress` on 09-16-2025 17:45:24*
+*Generated automatically via Python + Jinja2 + SQL Server table `tblMiniProjectProgress` on 09-16-2025 17:46:48*
