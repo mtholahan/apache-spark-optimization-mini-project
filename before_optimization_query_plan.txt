@@ -1,0 +1,72 @@
+== Physical Plan ==
+AdaptiveSparkPlan (11)
++- Project (10)
+   +- BroadcastHashJoin LeftOuter BuildRight (9)
+      :- Scan parquet  (1)
+      +- BroadcastExchange (8)
+         +- HashAggregate (7)
+            +- Exchange (6)
+               +- HashAggregate (5)
+                  +- Project (4)
+                     +- Filter (3)
+                        +- Scan parquet  (2)
+
+
+(1) Scan parquet 
+Output [3]: [question_id#6L, creation_date#8, title#9]
+Batched: true
+Location: InMemoryFileIndex [file:/mnt/c/Projects/apache-spark-optimization-mini-project/data/questions]
+ReadSchema: struct<question_id:bigint,creation_date:timestamp,title:string>
+
+(2) Scan parquet 
+Output [2]: [question_id#0L, creation_date#2]
+Batched: true
+Location: InMemoryFileIndex [file:/mnt/c/Projects/apache-spark-optimization-mini-project/data/answers]
+PushedFilters: [IsNotNull(question_id)]
+ReadSchema: struct<question_id:bigint,creation_date:timestamp>
+
+(3) Filter
+Input [2]: [question_id#0L, creation_date#2]
+Condition : isnotnull(question_id#0L)
+
+(4) Project
+Output [2]: [question_id#0L, month(cast(creation_date#2 as date)) AS month#15]
+Input [2]: [question_id#0L, creation_date#2]
+
+(5) HashAggregate
+Input [2]: [question_id#0L, month#15]
+Keys [2]: [question_id#0L, month#15]
+Functions [1]: [partial_count(1)]
+Aggregate Attributes [1]: [count#31L]
+Results [3]: [question_id#0L, month#15, count#32L]
+
+(6) Exchange
+Input [3]: [question_id#0L, month#15, count#32L]
+Arguments: hashpartitioning(question_id#0L, month#15, 200), ENSURE_REQUIREMENTS, [plan_id=453]
+
+(7) HashAggregate
+Input [3]: [question_id#0L, month#15, count#32L]
+Keys [2]: [question_id#0L, month#15]
+Functions [1]: [count(1)]
+Aggregate Attributes [1]: [count(1)#24L]
+Results [3]: [question_id#0L, month#15, count(1)#24L AS cnt#16L]
+
+(8) BroadcastExchange
+Input [3]: [question_id#0L, month#15, cnt#16L]
+Arguments: HashedRelationBroadcastMode(List(input[0, bigint, true]),false), [plan_id=456]
+
+(9) BroadcastHashJoin
+Left keys [1]: [question_id#6L]
+Right keys [1]: [question_id#0L]
+Join type: LeftOuter
+Join condition: None
+
+(10) Project
+Output [5]: [question_id#6L, creation_date#8, title#9, month#15, cnt#16L]
+Input [6]: [question_id#6L, creation_date#8, title#9, question_id#0L, month#15, cnt#16L]
+
+(11) AdaptiveSparkPlan
+Output [5]: [question_id#6L, creation_date#8, title#9, month#15, cnt#16L]
+Arguments: isFinalPlan=false
+
+
