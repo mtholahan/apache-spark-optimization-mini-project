@@ -63,10 +63,10 @@ I ran this project in WSL/Ubuntu environment with PySpark installed.
 
 ## 📸 Evidence
 
-![original_script_output.png](./evidence/original_script_output.png)  
+![01_original_script_output.png](./evidence/01_original_script_output.png)  
 Screenshot of PySpark output of original Python script
 
-![revised_script_output.png](./evidence/revised_script_output.png)  
+![02_revised_script_output.png](./evidence/02_revised_script_output.png)  
 Screenshot of PySpark output of revised Python script
 
 
@@ -74,11 +74,11 @@ Screenshot of PySpark output of revised Python script
 
 ## 📎 Deliverables
 
-- [`original_optimize.py`](./deliverables/original_optimize.py)
+- [`- original_optimize.py`](./deliverables/- original_optimize.py)
 
-- [`revised_optimize.py`](./deliverables/revised_optimize.py)
+- [`- revised_optimize.py`](./deliverables/- revised_optimize.py)
 
-- [`README explaining bottlenecks and applied optimizations`](./deliverables/README explaining bottlenecks and applied optimizations)
+- [`- README explaining bottlenecks and applied optimizations`](./deliverables/- README explaining bottlenecks and applied optimizations)
 
 
 
@@ -105,4 +105,4 @@ Screenshot of PySpark output of revised Python script
 - Optional: Document optimization strategies in project repo
 
 
-*Generated automatically via Python + Jinja2 + SQL Server table `tblMiniProjectProgress` on 09-16-2025 17:25:43*
+*Generated automatically via Python + Jinja2 + SQL Server table `tblMiniProjectProgress` on 09-16-2025 17:29:41*
