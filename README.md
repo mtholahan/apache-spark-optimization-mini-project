@@ -74,11 +74,9 @@ Screenshot of PySpark output of revised Python script
 
 ## 📎 Deliverables
 
-- [`- original_optimize.py`](./deliverables/- original_optimize.py)
+- [`original_optimize.py`](./deliverables/original_optimize.py)
 
-- [`- revised_optimize.py`](./deliverables/- revised_optimize.py)
-
-- [`- README explaining bottlenecks and applied optimizations`](./deliverables/- README explaining bottlenecks and applied optimizations)
+- [`revised_optimize.py`](./deliverables/revised_optimize.py)
 
 
 
@@ -105,4 +103,4 @@ Screenshot of PySpark output of revised Python script
 - Optional: Document optimization strategies in project repo
 
 
-*Generated automatically via Python + Jinja2 + SQL Server table `tblMiniProjectProgress` on 09-16-2025 17:29:41*
+*Generated automatically via Python + Jinja2 + SQL Server table `tblMiniProjectProgress` on 09-16-2025 17:35:44*
